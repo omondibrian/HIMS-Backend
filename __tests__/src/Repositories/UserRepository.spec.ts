@@ -32,7 +32,8 @@ describe("UserRepository", () => {
 
   afterAll(async () => {
     await User.query().delete().where("name", "=", inspectorData.name);
-    User.knex().destroy();
+    await User.knex().destroy();
+    await Apiary.knex().destroy()
   });
   describe("UserRepository - Insert", () => {
     it("should successfully insert the new User Detail based on the specified Data", async () => {

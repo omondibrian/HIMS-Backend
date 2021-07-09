@@ -25,7 +25,8 @@ describe("Hive Repository", () => {
   });
   afterAll(async () => {
     await User.query().delete().where("email", "=", testData.email);
-    // await Hive.query().delete().where("email", "=", testData.email);
+    await User.knex().destroy();
+    await Apiary.knex().destroy()
   });
   describe("HiveRepository - createApiary", () => {
     it("should create new Apiary based on the data obtained", async () => {
