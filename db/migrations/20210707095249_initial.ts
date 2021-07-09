@@ -58,6 +58,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string("hiveTemperament").notNullable();
         table.string("honeyStores").notNullable();
         table.string("InspectionDate").notNullable();
+        table.integer("Produce").notNullable().defaultTo(0);
         table.string("generalApiaryObservations").notNullable();
         createRef(table, TableNames.Hive);
         addDefaultColumns(table);

@@ -9,6 +9,7 @@ export interface IHiveReport {
   beePopulation: string;
   hiveTemperament: string;
   honeyStores: string;
+  Produce: number;
   InspectionDate: string;
   generalApiaryObservations: string;
   Hive_id?: string;
@@ -19,7 +20,7 @@ export class HiveDTO {
     public Name: string,
     public Type: string,
     public Apiary_id: string,
-    public HiveReport?:Array<IHiveReport>,
+    public HiveReport?: Array<IHiveReport>,
     public Hive_id?: string
   ) {}
 }

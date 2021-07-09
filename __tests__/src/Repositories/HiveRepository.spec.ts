@@ -141,6 +141,7 @@ describe("Hive Repository", () => {
           hiveTemperament: "moderate",
           honeyStores: "High",
           InspectionDate: "678940404",
+          Produce:10,
           generalApiaryObservations: "nice super ,colony is nice and strong",
         };
         const hiveReport = await repository.insertHiveReport(

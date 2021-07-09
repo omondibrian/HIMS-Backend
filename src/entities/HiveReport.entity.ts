@@ -14,7 +14,7 @@ Model.knex(database);
 
 export default class HiveReport extends Model {
   _id?: number;
-  Hive_id!:number;
+  Hive_id!: number;
   Pests!: boolean;
   sawQueen!: boolean;
   occupied!: boolean;
@@ -26,8 +26,9 @@ export default class HiveReport extends Model {
   hiveTemperament!: string;
   honeyStores!: string;
   InspectionDate!: string;
+  Produce!: number;
   generalApiaryObservations!: string;
-  
+
   static get tableName(): string {
     return TableNames.Hive_Report;
   }
