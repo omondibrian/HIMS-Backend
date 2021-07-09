@@ -54,7 +54,7 @@ jobs:
           ${{ runner.os }}-build-
           ${{ runner.os }}-
     - run: npm install
-    - run: make migrations
+    - run: npm run migrations
     - run: npm run test 
     
 
