@@ -3,9 +3,7 @@ import Knex from "knex";
 import { Model } from "objection";
 import con from "@HIHM/knexfile";
 import TableNames from "../constants";
-import Apiary from "./Apiary.entity";
 import Hive from "./Hive.entity";
-import { LargeNumberLike } from "crypto";
 
 const env = (process.env.NODE_ENV as string) || "development";
 const config = env === "development" ? con.development : con.production;
