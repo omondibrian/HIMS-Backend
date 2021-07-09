@@ -3,9 +3,7 @@ import Knex from "knex";
 import { Model } from "objection";
 import con from "@HIHM/knexfile";
 import TableNames from "../constants";
-import Apiary from "./Apiary.entity";
 import Hive from "./Hive.entity";
-import { LargeNumberLike } from "crypto";
 
 const env = (process.env.NODE_ENV as string) || "development";
 const config = env === "development" ? con.development : con.production;
@@ -14,7 +12,7 @@ Model.knex(database);
 
 export default class HiveReport extends Model {
   _id?: number;
-  Hive_id!:number;
+  Hive_id!: number;
   Pests!: boolean;
   sawQueen!: boolean;
   occupied!: boolean;
@@ -26,8 +24,9 @@ export default class HiveReport extends Model {
   hiveTemperament!: string;
   honeyStores!: string;
   InspectionDate!: string;
+  Produce!: number;
   generalApiaryObservations!: string;
-  
+
   static get tableName(): string {
     return TableNames.Hive_Report;
   }

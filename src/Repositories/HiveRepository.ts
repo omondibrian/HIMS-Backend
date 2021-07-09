@@ -15,7 +15,7 @@ import TableNames from "../constants";
 import { injectable } from "inversify";
 import InspectionSite from "../entities/InspectionSite.entity";
 
-interface IRepository {
+export interface IRepository {
   createApiary(data: ApiaryDto): Promise<Apiary>;
   createHive(
     data: Omit<HiveDTO, "HiveReport">
@@ -101,6 +101,7 @@ export class HiveRepository implements IRepository {
         `${TableNames.Hive_Report}.hiveTemperament`,
         `${TableNames.Hive_Report}.honeyStores`,
         `${TableNames.Hive_Report}.InspectionDate`,
+        `${TableNames.Hive_Report}.Produce`,
         `${TableNames.Hive_Report}.generalApiaryObservations`
       )
       .from(TableNames.Hive_Report)
@@ -118,6 +119,7 @@ export class HiveRepository implements IRepository {
         hiveTemperament: report.hiveTemperament,
         honeyStores: report.honeyStores,
         InspectionDate: report.InspectionDate,
+        Produce: report.Produce,
         generalApiaryObservations: report.generalApiaryObservations,
       } as IHiveReport;
     });
