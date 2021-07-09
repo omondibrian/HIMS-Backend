@@ -31,6 +31,7 @@ jobs:
       POSTGRES_PASSWORD: rootUser
       POSTGRES_USER: dev
       POSTGRES_DB: HIMS
+      POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
     strategy:
       matrix:
         node-version: [12.x, 14.x]
