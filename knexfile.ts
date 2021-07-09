@@ -6,7 +6,7 @@
     development: {
       client: 'pg',
       connection: {
-        port:process.env.POSTGRES_PORT as unknown as number,
+        port:process.env.POSTGRES_PORT as unknown as  number,
         database: process.env.POSTGRES_DB,
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
@@ -22,7 +22,7 @@
     staging: {
       client: 'pg',
       connection: {
-        port:process.env.HOST  as unknown as  number,
+        port:process.env.POSTGRES_PORT  as unknown as  number,
         database: process.env.POSTGRES_DB,
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
@@ -38,7 +38,7 @@
     production: {
       client: 'pg',
       connection: {
-        port:process.env.HOST  as unknown as  number,
+        port:process.env.POSTGRES_PORT  as unknown as  number,
         database: process.env.POSTGRES_DB,
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
