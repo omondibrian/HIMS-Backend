@@ -1,5 +1,5 @@
 # Hive Inspection And Monitoring System (HIMS)
-![Node.js CI](https://github.com/omondibrian/HIMS/workflows/Node.js%20CI/badge.svg)
+![Node.js CI](https://github.com/omondibrian/HIMS-Backend/workflows/Node.js%20CI/badge.svg)
 ![My Imge](./bee.svg)
 
 >## About The Project
