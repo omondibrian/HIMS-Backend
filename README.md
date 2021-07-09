@@ -1,5 +1,6 @@
-![My Imge](./bee.svg)
 # Hive Inspection And Monitoring System (HIMS)
+![My Imge](./bee.svg)
+
 >This is an API for Recording And managing Bee Hive Operations
 
 
