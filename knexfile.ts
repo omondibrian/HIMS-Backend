@@ -6,7 +6,7 @@
     development: {
       client: 'pg',
       connection: {
-        port:process.env.HOST as unknown as  number,
+        port:5434,
         database: process.env.POSTGRES_DB,
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
