@@ -99,7 +99,6 @@ describe("Hive Repository", () => {
           .where("name ", "=", "grandApiary");
         const hive = new HiveDTO("BumbleBee", "TopBar", apiary[0]._id + "");
         const newHive = await repository.createHive(hive);
-        console.log(newHive);
         expect(newHive).toBeDefined();
       });
     });
