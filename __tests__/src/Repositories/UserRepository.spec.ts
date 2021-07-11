@@ -73,12 +73,12 @@ describe("UserRepository", () => {
     const data = { field: "email", value: "johnDoe@testEmail.com" };
     it("should successfully retrive  User data based on the specified parameters", async () => {
       const result = await repository.find(data);
-      expect(result.name).toEqual(UpdatedData.name);
-      expect(result.email).toEqual(UpdatedData.email);
-      expect(result.profilePic).toEqual(UpdatedData.profilePic);
-      expect(result.BackGroundImg).toEqual(UpdatedData.BackGroundImg);
-      expect(result.Type).toEqual(UpdatedData.Type);
-      expect(result.password).toEqual(UpdatedData.password);
+      expect(result?.name).toEqual(UpdatedData.name);
+      expect(result?.email).toEqual(UpdatedData.email);
+      expect(result?.profilePic).toEqual(UpdatedData.profilePic);
+      expect(result?.BackGroundImg).toEqual(UpdatedData.BackGroundImg);
+      expect(result?.Type).toEqual(UpdatedData.Type);
+      expect(result?.password).toEqual(UpdatedData.password);
     });
   });
 
@@ -86,8 +86,8 @@ describe("UserRepository", () => {
     const data = { field: "email", value: "johnDoe@testEmail.com" };
 
     it("should successfully retrive  User data based on the specified parameters", async () => {
-      const { _id } = await repository.find(data);
-      const result = await repository.findById(_id + "");
+      const { _id } = await repository.find(data) as User;
+      const result = await repository.findById(_id + "") as User;
       expect(result.name).toEqual(UpdatedData.name);
       expect(result.email).toEqual(UpdatedData.email);
       expect(result.profilePic).toEqual(UpdatedData.profilePic);
@@ -120,7 +120,7 @@ describe("UserRepository", () => {
     //   await User.query().delete().where("name", "=", inspectorData.name);
     // });
     it("should fetch the requested inspector details", async () => {
-      const inspector = await repository.fetchInspector(inspectorData.name);
+      const inspector = await repository.fetchInspector(inspectorData.name)as User;
       expect(inspector.name).toEqual(inspectorData.name);
       expect(inspector._id).toBeDefined();
     });
@@ -140,7 +140,7 @@ describe("UserRepository", () => {
     const data = { field: "email", value: "johnDoe@testEmail.com" };
 
     it("should successfully Delete  User data based on the specified parameters", async () => {
-      const { _id } = await repository.find(data);
+      const { _id } = await repository.find(data) as User;
       const result = await repository.Delete(_id + "");
       expect(result.name).toEqual(UpdatedData.name);
       expect(result.email).toEqual(UpdatedData.email);
