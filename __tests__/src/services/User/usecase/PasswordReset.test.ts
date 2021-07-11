@@ -1,22 +1,22 @@
+import { NotificationService } from "@HIHM/__mocks__/notificationService";
+import { UserMockRepository } from "@HIHM/__mocks__/UserRepository";
 import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import User from "@HIHM/src/entities/user.entity";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { PasswordReset } from "@HIHM/src/services/User/usecase/PasswordReset";
-import { NotificationService } from "@HIHM/__mocks__/notificationService";
-import { UserMockRepository } from "@HIHM/__mocks__/UserRepository";
 
 class Bcrypt {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
-  compare() {
+  public compare() {
     return true;
   }
-  hash(pass: string) {
+  public hash(pass: string) {
     return `pass${pass}`;
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  genSalt(): any {}
+  public genSalt(): any {}
 }
 
 describe("ForgotPass - Usecase", () => {
@@ -44,7 +44,7 @@ describe("ForgotPass - Usecase", () => {
     email: "testUser@email.com",
   };
   it("should successfully reset user's password", async () => {
-    //setup mocks
+    // setup mocks
     const mockFindUser = jest
       .spyOn(testRepo, "find")
       .mockResolvedValue(user as User);
@@ -88,7 +88,7 @@ describe("ForgotPass - Usecase", () => {
   });
 
   it("should return error message if profile update fails", async () => {
-    //setup mocks
+    // setup mocks
     const mockFindUser = jest
       .spyOn(testRepo, "find")
       .mockResolvedValue(user as User);

@@ -1,14 +1,14 @@
-import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
-import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
-import { ResultPayload } from "@HIHM/src/lib/utilities/result";
-import { HiveDTO } from "@HIHM/src/DTOs/HiveDTO";
 import Hive from "@Entities/Hive.entity";
+import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
+import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
+import { HiveDTO } from "@HIHM/src/DTOs/HiveDTO";
+import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { ViewHives } from "@Services/Hive/usecases/ViewHives";
 
 describe("ViewHives - Usecase", () => {
   const repo = new MockHiveRepository();
-  const config = jest.fn().mockReturnValue({env:'development'})
-  const usecase = new ViewHives(repo,config);
+  const config = jest.fn().mockReturnValue({env: "development"});
+  const usecase = new ViewHives(repo, config);
   const userId = "1";
   const apiaryId = "1";
   const newApiary = new ApiaryDto("GrandApiary", userId);
@@ -16,8 +16,8 @@ describe("ViewHives - Usecase", () => {
   it("should successfully retrive all hive data for a specific apairy", async () => {
     const mockView = jest
       .spyOn(repo, "GetHives")
-      .mockResolvedValue([newHive] as Array<Hive>)
-    const hives = (await usecase.fetch(apiaryId)) as ResultPayload<Array<HiveDTO>>;
+      .mockResolvedValue([newHive] as Hive[]);
+    const hives = (await usecase.fetch(apiaryId)) as ResultPayload<HiveDTO[]>;
     expect(hives.getPayload()?.length).toBeGreaterThan(0);
     mockView.mockClear();
   });
@@ -41,10 +41,9 @@ describe("ViewHives - Usecase", () => {
     const mockView = jest.spyOn(repo, "GetHives").mockImplementation(() => {
       throw new Error("testing for Exceptions");
     });
-    config.mockReturnValue({env:'production'})
+    config.mockReturnValue({env: "production"});
     const hives = await usecase.fetch(apiaryId);
     expect(hives).toBeDefined();
-
 
     const expectedSimulatedResults = new ResultPayload<Error>(
       new Error("error while retriving data"),

@@ -1,13 +1,13 @@
-import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
 import Apiary from "@Entities/Apiary.entity";
 import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
-import { CreateApiary } from "@Services/Hive/usecases/CreateApiary";
+import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
+import { CreateApiary } from "@Services/Hive/usecases/CreateApiary";
 
 describe("CreateApiary - Usecase", () => {
   const repo = new MockHiveRepository();
-  const config = jest.fn().mockReturnValue({env:'development'})
-  const usecase = new CreateApiary(repo,config);
+  const config = jest.fn().mockReturnValue({env: "development"});
+  const usecase = new CreateApiary(repo, config);
   const userId = "1";
   const newApiary = new ApiaryDto("GrandApiary", userId);
   it("should successfully create a new apiary", async () => {
@@ -46,10 +46,9 @@ describe("CreateApiary - Usecase", () => {
       .mockImplementation(() => {
         throw new Error("testing for Exceptions");
       });
-      config.mockReturnValue({env:'production'})
+    config.mockReturnValue({env: "production"});
     const apiary = await usecase.add(newApiary);
     expect(apiary).toBeDefined();
-
 
     const expectedSimulatedResults = new ResultPayload<Error>(
       new Error("error while creating Apiary"),
@@ -59,5 +58,5 @@ describe("CreateApiary - Usecase", () => {
     expect(apiary).toStrictEqual<ResultPayload<Error>>(expectedSimulatedResults);
     mockCreate.mockClear();
   });
-  
+
 });

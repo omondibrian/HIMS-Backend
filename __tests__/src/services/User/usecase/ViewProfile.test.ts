@@ -1,7 +1,7 @@
-import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import User from "@Entities/user.entity";
-import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { UserMockRepository } from "@HIHM/__mocks__/UserRepository";
+import { UserDto } from "@HIHM/src/DTOs/UserDTO";
+import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { ViewProfile } from "@HIHM/src/services/User/usecase/ViewProfile";
 
 describe("ViewProfile - Usecase", () => {
@@ -23,7 +23,7 @@ describe("ViewProfile - Usecase", () => {
 
   const userId = "1";
   it("should successfully Retrive User Profile", async () => {
-    //setup mocks
+    // setup mocks
     const mockUpdate = jest
       .spyOn(testRepo, "findById")
       .mockResolvedValue(user as User);

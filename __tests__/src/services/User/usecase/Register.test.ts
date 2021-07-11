@@ -1,24 +1,24 @@
+import AuthServiceUtilities from "@HIHM/__mocks__/auth_service_utilities";
+import { NotificationService } from "@HIHM/__mocks__/notificationService";
+import { UserMockRepository } from "@HIHM/__mocks__/UserRepository";
 import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import User from "@HIHM/src/entities/user.entity";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { Registration } from "@HIHM/src/services/User/usecase/Register";
-import AuthServiceUtilities from "@HIHM/__mocks__/auth_service_utilities";
-import { NotificationService } from "@HIHM/__mocks__/notificationService";
-import { UserMockRepository } from "@HIHM/__mocks__/UserRepository";
 import Joi from "joi";
 
 class Bcrypt {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
-  compare() {
+  public compare() {
     return true;
   }
-  hash(pass: string) {
+  public hash(pass: string) {
     return `pass${pass}`;
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  genSalt(): any {}
+  public genSalt(): any {}
 }
 
 describe("Registeruser - Usecase", () => {
@@ -51,7 +51,7 @@ describe("Registeruser - Usecase", () => {
     "testPass"
   );
   it("should successfully register new user", async () => {
-    //setup mocks
+    // setup mocks
     const mockregistrationValidation = jest.spyOn(
       testUtilities,
       "registrationValidation"
@@ -126,7 +126,7 @@ describe("Registeruser - Usecase", () => {
     )) as ResultPayload<Error>;
     expect(result.getError()?.message).toEqual("cannot send mail to user of undefined");
     mockValidation.mockClear();
-    mockFindUser.mockClear()
+    mockFindUser.mockClear();
   });
   it("should return error if invalid credentials are passed", async () => {
     const mockValidation = jest.spyOn(testUtilities, "registrationValidation");

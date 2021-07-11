@@ -1,8 +1,8 @@
+import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
 import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
 import Apiary from "@HIHM/src/entities/Apiary.entity";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { ModifyApiary } from "@HIHM/src/services/Hive/usecases/ModifyApiary";
-import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
 
 describe("ModifyApiary - Usecase", () => {
   const repo = new MockHiveRepository();

@@ -1,13 +1,13 @@
 import { HiveDTO } from "@HIHM/src/DTOs/HiveDTO";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
-import { IRepository } from "@Repositories/HiveRepository";
+import { IHiveRepository } from "@Repositories/HiveRepository";
 
 export class ViewHives {
-  constructor(private readonly repo: IRepository,private readonly config:any) {}
+  constructor(private readonly repo: IHiveRepository, private readonly config: any) {}
 
-  async fetch(
+  public async fetch(
     apiaryID: string
-  ): Promise<ResultPayload<Array<HiveDTO>> | ResultPayload<Error> | undefined> {
+  ): Promise<ResultPayload<HiveDTO[]> | ResultPayload<Error> | undefined> {
     try {
       const hives = await this.repo.GetHives(apiaryID);
       const result = hives.map(
@@ -20,7 +20,7 @@ export class ViewHives {
             hive._id + ""
           )
       );
-      return new ResultPayload<Array<HiveDTO>>(result, 200);
+      return new ResultPayload<HiveDTO[]>(result, 200);
     } catch (error: any) {
       /* istanbul ignore else */
       const msg =

@@ -1,10 +1,10 @@
 import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
-import { IRepository } from "@HIHM/src/Repositories/HiveRepository";
+import { IHiveRepository } from "@HIHM/src/Repositories/HiveRepository";
 
 export class ModifyApiary {
-  constructor(private readonly repo: IRepository,private readonly config:any) {}
-  async modify(
+  constructor(private readonly repo: IHiveRepository, private readonly config: any) {}
+  public async modify(
     id: string,
     data: ApiaryDto
   ): Promise<ResultPayload<ApiaryDto> | ResultPayload<Error> | undefined> {

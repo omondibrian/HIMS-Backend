@@ -1,7 +1,7 @@
 /* istanbul ignore file */
+import con from "@HIHM/knexfile";
 import Knex from "knex";
 import { Model } from "objection";
-import con from "@HIHM/knexfile";
 import TableNames from "../constants";
 import Hive from "./Hive.entity";
 
@@ -11,21 +11,6 @@ const database = Knex(config);
 Model.knex(database);
 
 export default class HiveReport extends Model {
-  _id?: number;
-  Hive_id!: number;
-  Pests!: boolean;
-  sawQueen!: boolean;
-  occupied!: boolean;
-  presenceOfQueenCells!: boolean;
-  exccessiveDroneCells!: boolean;
-  harvested!: boolean;
-  broodType!: string;
-  beePopulation!: string;
-  hiveTemperament!: string;
-  honeyStores!: string;
-  InspectionDate!: string;
-  Produce!: number;
-  generalApiaryObservations!: string;
 
   static get tableName(): string {
     return TableNames.Hive_Report;
@@ -35,7 +20,7 @@ export default class HiveReport extends Model {
     return "_id";
   }
 
-  static relationMappings = {
+  public static relationMappings = {
     [TableNames.Hive]: {
       relation: Model.BelongsToOneRelation,
       modelClass: Hive,
@@ -45,4 +30,19 @@ export default class HiveReport extends Model {
       },
     },
   };
+  public _id?: number;
+  public Hive_id!: number;
+  public Pests!: boolean;
+  public sawQueen!: boolean;
+  public occupied!: boolean;
+  public presenceOfQueenCells!: boolean;
+  public exccessiveDroneCells!: boolean;
+  public harvested!: boolean;
+  public broodType!: string;
+  public beePopulation!: string;
+  public hiveTemperament!: string;
+  public honeyStores!: string;
+  public InspectionDate!: string;
+  public Produce!: number;
+  public generalApiaryObservations!: string;
 }

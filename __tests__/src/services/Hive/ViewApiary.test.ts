@@ -1,8 +1,8 @@
+import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
 import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
 import Apiary from "@HIHM/src/entities/Apiary.entity";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { ViewApiary } from "@Services/Hive/usecases/ViewApiary";
-import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
 
 describe("ViewApiary - Usecase", () => {
   const repo = new MockHiveRepository();
@@ -13,10 +13,10 @@ describe("ViewApiary - Usecase", () => {
     const mockView = jest
       .spyOn(repo, "getApiary")
       .mockResolvedValue([ApiaryData] as [Apiary]);
-    const apiary = (await usecase.fetch(ownerId)) as ResultPayload<Array<ApiaryDto>>;
+    const apiary = (await usecase.fetch(ownerId)) as ResultPayload<ApiaryDto[]>;
     expect(apiary).toBeDefined();
     expect(apiary?.getPayload()?.length).toBeGreaterThan(0);
- 
+
     mockView.mockClear();
   });
 
@@ -24,11 +24,11 @@ describe("ViewApiary - Usecase", () => {
     const mockView = jest
       .spyOn(repo, "fetchInspectionSites")
       .mockResolvedValue([ApiaryData]);
-      const mode = true;
-    const apiary = (await usecase.fetch(ownerId,mode)) as ResultPayload<Array<ApiaryDto>>;
+    const mode = true;
+    const apiary = (await usecase.fetch(ownerId, mode)) as ResultPayload<ApiaryDto[]>;
     expect(apiary).toBeDefined();
     expect(apiary?.getPayload()?.length).toBeGreaterThan(0);
- 
+
     mockView.mockClear();
   });
   it("should return resultPayload with an error incase of an exception", async () => {

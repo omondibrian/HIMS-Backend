@@ -4,14 +4,14 @@ export class UserDto {
   public profilePic: string;
   public BackGroundImg: string;
   public Type: string;
-  public password?:string
+  public password?: string;
   constructor(
     name: string,
     email: string,
     profilePic: string,
     BackGroundImg: string,
     Type: string,
-    Password?:string
+    Password?: string
   ) {
     this.name = name;
     this.email = email;

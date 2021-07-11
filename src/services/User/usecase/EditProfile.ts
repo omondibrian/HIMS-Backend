@@ -1,15 +1,15 @@
-import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import User from "@Entities/user.entity";
+import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
-import { IRepository } from "@Repositories/UserRepository";
+import { IUserRepository } from "@Repositories/UserRepository";
 
 export class EditProfile {
   constructor(
-    private readonly repo: IRepository,
+    private readonly repo: IUserRepository,
     private readonly bcrypt: any,
     private readonly config: any
   ) {}
-  async update(
+  public async update(
     userId: string,
     user: UserDto
   ): Promise<ResultPayload<UserDto> | ResultPayload<Error> | undefined> {
@@ -18,7 +18,7 @@ export class EditProfile {
       let userToUpdate: UserDto;
       let updates: User;
       if (user.password) {
-        //encrpte the password
+        // encrpte the password
         encrptedPass = await this.bcrypt.hash(user.password, 10);
         userToUpdate = { ...user, password: encrptedPass };
         updates = await this.repo.update(

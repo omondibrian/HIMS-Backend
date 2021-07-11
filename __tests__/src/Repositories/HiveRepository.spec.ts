@@ -1,13 +1,13 @@
 import "reflect-metadata";
 
 import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
+import { HiveDTO, IHiveReport } from "@HIHM/src/DTOs/HiveDTO";
 import { UserDto } from "@HIHM/src/DTOs/UserDTO";
+import Apiary from "@HIHM/src/entities/Apiary.entity";
+import Hive from "@HIHM/src/entities/Hive.entity";
+import User from "@HIHM/src/entities/user.entity";
 import UserRepository from "@HIHM/src/Repositories/UserRepository";
 import { HiveRepository } from "@Repositories/HiveRepository";
-import User from "@HIHM/src/entities/user.entity";
-import Apiary from "@HIHM/src/entities/Apiary.entity";
-import { HiveDTO, IHiveReport } from "@HIHM/src/DTOs/HiveDTO";
-import Hive from "@HIHM/src/entities/Hive.entity";
 
 describe("Hive Repository", () => {
   const repository = new HiveRepository();
@@ -26,7 +26,7 @@ describe("Hive Repository", () => {
   afterAll(async () => {
     await User.query().delete().where("email", "=", testData.email);
     await User.knex().destroy();
-    await Apiary.knex().destroy()
+    await Apiary.knex().destroy();
   });
   describe("HiveRepository - createApiary", () => {
     it("should create new Apiary based on the data obtained", async () => {
@@ -77,17 +77,17 @@ describe("Hive Repository", () => {
     );
     beforeAll(async () => {
       await User.query().delete().where("email", "=", inspectorData.email);
-      //create a new Inspector
+      // create a new Inspector
       await User.query().insert(inspectorData);
     });
-  
+
     it("should retrive an existing Apiary based on the data provided", async () => {
       const inspector = await User.query()
         .select("*")
         .where("email", "=", inspectorData.email);
       const result = await repository.fetchInspectionSites("163");
       expect(result.length).toBeGreaterThanOrEqual(0);
-      
+
     });
   });
 
@@ -140,7 +140,7 @@ describe("Hive Repository", () => {
           hiveTemperament: "moderate",
           honeyStores: "High",
           InspectionDate: "678940404",
-          Produce:10,
+          Produce: 10,
           generalApiaryObservations: "nice super ,colony is nice and strong",
         };
         const hiveReport = await repository.insertHiveReport(

@@ -1,38 +1,38 @@
 import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { IAuthserviceUtilities } from "@HIHM/src/lib/utilities/validation/auth_service_utilities";
-import { IRepository } from "@Repositories/UserRepository";
+import { IUserRepository } from "@Repositories/UserRepository";
 import { IMailer } from "@Services/email";
 
 export class Registration {
   constructor(
-    private readonly repo: IRepository,
+    private readonly repo: IUserRepository,
     private readonly utility: IAuthserviceUtilities,
     private readonly jwt: any,
     private readonly bcrypt: any,
     private readonly mailer: IMailer,
     private readonly config: any
   ) {}
-  async registeruser(
+  public async registeruser(
     newUser: UserDto
   ): Promise<
     ResultPayload<{ message: string }> | ResultPayload<Error> | undefined
   > {
     try {
-      //validate the user input
+      // validate the user input
       const { error } = this.utility.registrationValidation(newUser);
-      if (error) throw new Error(`${error.details[0].message}`);
+      if (error) { throw new Error(`${error.details[0].message}`); }
 
-      //check if the email already exists
+      // check if the email already exists
       const user = await this.repo.find({
         field: "email",
         value: newUser.email,
       });
-      if (user) throw new Error("email already exists");
+      if (user) { throw new Error("email already exists"); }
 
-      //encrpte the password
+      // encrpte the password
       const encrptedPass = await this.bcrypt.hash(newUser.password, 10);
-      //create a new user
+      // create a new user
       const savedUser = await this.repo.insert({
         name: newUser.name,
         email: newUser.email,
@@ -41,11 +41,11 @@ export class Registration {
         profilePic: newUser.profilePic,
         Type: newUser.Type,
       });
-      if (!savedUser) throw new Error("cannot send mail to user of undefined");
-      
+      if (!savedUser) { throw new Error("cannot send mail to user of undefined"); }
+
       const payload = { email: savedUser.email };
       const secreateToken = this.jwt.sign(payload, process.env.SECREATE_TOKEN);
-      //compose an email
+      // compose an email
       const html = `
           Congrats  ${savedUser.name},<br/>
           You have successfully created your HIMS Account
@@ -54,7 +54,7 @@ export class Registration {
           Have a nice day.🙋🙋<br/>
           <small>this is an automated email</small>
           `;
-      //send the email
+      // send the email
       console.log(savedUser);
       await this.mailer.send({
         to: savedUser.email,

@@ -1,16 +1,16 @@
-import { HiveDTO } from "@HIHM/src/DTOs/HiveDTO";
 import Hive from "@Entities/Hive.entity";
-import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
+import { HiveDTO } from "@HIHM/src/DTOs/HiveDTO";
+import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { ModifyHive } from "@Services/Hive/usecases/ModifyHive";
 
 describe("ModifyHive - Usecase", () => {
   const repo = new MockHiveRepository();
-  const config = jest.fn().mockReturnValue({env:'development'})
-  const usecase = new ModifyHive(repo,config);
+  const config = jest.fn().mockReturnValue({env: "development"});
+  const usecase = new ModifyHive(repo, config);
   const userId = "1";
-  const apiaryID = '1';
-  const newlyModifiedHive = new HiveDTO("Bumblebee","TopBar",apiaryID, undefined, userId);
+  const apiaryID = "1";
+  const newlyModifiedHive = new HiveDTO("Bumblebee", "TopBar", apiaryID, undefined, userId);
   it("should successfully Modify an existing hive", async () => {
     const mockUpdate = jest
       .spyOn(repo, "updateHive")
@@ -19,7 +19,7 @@ describe("ModifyHive - Usecase", () => {
       "1",
       newlyModifiedHive
     )) as ResultPayload<HiveDTO>;
-    console.log(hive)
+    console.log(hive);
     expect(hive).toBeDefined();
     expect(hive?.getPayload()?.Apiary_id).toBeDefined();
     expect(hive?.getPayload()?.Hive_id).toBeDefined();
@@ -55,7 +55,7 @@ describe("ModifyHive - Usecase", () => {
       .mockImplementation(() => {
         throw new Error("testing for Exceptions");
       });
-      config.mockReturnValue({env:'production'})
+    config.mockReturnValue({env: "production"});
     const hive = (await usecase.modify(
       "1",
       newlyModifiedHive

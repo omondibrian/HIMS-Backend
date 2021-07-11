@@ -1,24 +1,24 @@
+import AuthServiceUtilities from "@HIHM/__mocks__/auth_service_utilities";
+import { NotificationService } from "@HIHM/__mocks__/notificationService";
+import { UserMockRepository } from "@HIHM/__mocks__/UserRepository";
 import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import User from "@HIHM/src/entities/user.entity";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { LogIn } from "@Services/User/usecase/LogIn";
-import AuthServiceUtilities from "@HIHM/__mocks__/auth_service_utilities";
-import { NotificationService } from "@HIHM/__mocks__/notificationService";
-import { UserMockRepository } from "@HIHM/__mocks__/UserRepository";
 import Joi from "joi";
 
 class Bcrypt {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
-  compare() {
+  public compare() {
     return true;
   }
-  hash(pass: string) {
+  public hash(pass: string) {
     return `pass${pass}`;
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  genSalt(): any {}
+  public genSalt(): any {}
 }
 
 describe("Login - Usecase", () => {
@@ -47,7 +47,7 @@ describe("Login - Usecase", () => {
     email: "testUser@email.com",
   };
   it("should successfully login new user", async () => {
-    //setup mocks
+    // setup mocks
     const mockLogInValidation = jest.spyOn(testUtilities, "loginValidation");
     mockLogInValidation.mockImplementationOnce(() => {
       return {

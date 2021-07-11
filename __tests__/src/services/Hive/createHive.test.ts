@@ -1,13 +1,13 @@
-import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
 import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
-import { ResultPayload } from "@HIHM/src/lib/utilities/result";
+import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
 import { HiveDTO } from "@HIHM/src/DTOs/HiveDTO";
+import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { CreateHive } from "@HIHM/src/services/Hive/usecases/CreateHive";
 
 describe("CreateHive - Usecase", () => {
   const repo = new MockHiveRepository();
-  const config = jest.fn().mockReturnValue({env:'development'})
-  const usecase = new CreateHive(repo,config);
+  const config = jest.fn().mockReturnValue({env: "development"});
+  const usecase = new CreateHive(repo, config);
   const userId = "1";
   const newApiary = new ApiaryDto("GrandApiary", userId);
   const newHive = new HiveDTO("HH/01", "Top Bar", newApiary._id + "");
@@ -29,7 +29,7 @@ describe("CreateHive - Usecase", () => {
     const mockCreate = jest.spyOn(repo, "createHive").mockImplementation(() => {
       throw new Error("testing for Exceptions");
     });
-    config.mockReturnValue({env:'development'})
+    config.mockReturnValue({env: "development"});
     const hive = await usecase.add(newHive);
     expect(hive).toBeDefined();
 
@@ -46,10 +46,9 @@ describe("CreateHive - Usecase", () => {
     const mockCreate = jest.spyOn(repo, "createHive").mockImplementation(() => {
       throw new Error("testing for Exceptions");
     });
-    config.mockReturnValue({env:'production'})
+    config.mockReturnValue({env: "production"});
     const hive = await usecase.add(newHive);
     expect(hive).toBeDefined();
-
 
     const expectedSimulatedResults = new ResultPayload<Error>(
       new Error("error while creating Hive"),

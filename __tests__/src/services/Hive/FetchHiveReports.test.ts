@@ -1,7 +1,7 @@
+import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
 import { HiveDTO, IHiveReport } from "@HIHM/src/DTOs/HiveDTO";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { FetchHiveReport } from "@Services/Hive/usecases/FetchHiveReports";
-import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
 
 describe("FetchHiveReports - usecase", () => {
   const report: IHiveReport = {
@@ -19,7 +19,7 @@ describe("FetchHiveReports - usecase", () => {
     Produce: 10,
     generalApiaryObservations: "nice super ,colony is nice and strong",
   };
-  const newHiveDetails = new HiveDTO("HH/01", "Top Bar", "1",[report],'1');
+  const newHiveDetails = new HiveDTO("HH/01", "Top Bar", "1", [report], "1");
   const hiveId = "1";
   const config = jest.fn().mockReturnValue({
     env: "development",
@@ -35,14 +35,14 @@ describe("FetchHiveReports - usecase", () => {
     expect(result).toStrictEqual<ResultPayload<HiveDTO>>(
       new ResultPayload<HiveDTO>(newHiveDetails, 200)
     );
-    mockFetch.mockClear()
+    mockFetch.mockClear();
   });
 
   it("should return resultPayload with an error incase of an exception", async () => {
     const mockFetch = jest.spyOn(repo, "GetHiveDetails").mockImplementation(() => {
       throw new Error("testing for Exceptions");
     });
-    config.mockReturnValue({env:'development'})
+    config.mockReturnValue({env: "development"});
     const result = await usecase.get(hiveId);
     expect(result).toBeDefined();
 
@@ -59,7 +59,7 @@ describe("FetchHiveReports - usecase", () => {
     const mockFetch = jest.spyOn(repo, "GetHiveDetails").mockImplementation(() => {
       throw new Error("testing for Exceptions");
     });
-    config.mockReturnValue({env:'production'})
+    config.mockReturnValue({env: "production"});
     const result = await usecase.get(hiveId);
     expect(result).toBeDefined();
 

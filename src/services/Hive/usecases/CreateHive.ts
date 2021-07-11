@@ -1,10 +1,10 @@
 import { HiveDTO } from "@HIHM/src/DTOs/HiveDTO";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
-import { IRepository } from "@Repositories/HiveRepository";
+import { IHiveRepository } from "@Repositories/HiveRepository";
 
 export class CreateHive {
-  constructor(private readonly repo: IRepository,private readonly config:any) {}
-  async add(
+  constructor(private readonly repo: IHiveRepository, private readonly config: any) {}
+  public async add(
     hive: HiveDTO
   ): Promise<ResultPayload<HiveDTO> | ResultPayload<Error> | undefined> {
     try {
