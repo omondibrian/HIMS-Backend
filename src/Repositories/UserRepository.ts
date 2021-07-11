@@ -2,17 +2,17 @@ import { injectable } from "inversify";
 import { UserDto } from "../DTOs/UserDTO";
 import User from "@Entities/user.entity";
 import InspectionSite from "../entities/InspectionSite.entity";
-interface IRepository {
+export interface IRepository {
   insert(data: UserDto): Promise<User>;
   update(
     options: { field: string; value: string },
     data: UserDto
   ): Promise<User>;
-  find(data: { field: string; value: string }): Promise<User>;
-  findById(id: string): Promise<User>;
+  find(data: { field: string; value: string }): Promise<User|undefined>;
+  findById(id: string): Promise<User|undefined>;
   Delete(id: string): Promise<User>;
   insertInspector(userId: string, apiaryId: string): Promise<boolean>;
-  fetchInspector(name: String): Promise<User>;
+  fetchInspector(name: String): Promise<User|undefined>;
   removeAnInspector(id: string): Promise<User>;
   
 }
@@ -32,18 +32,18 @@ export default class UserRepository implements IRepository {
       .where(options.field, "=", options.value);
     return result[0];
   }
-  async find(data: { field: string; value: string }): Promise<User> {
+  async find(data: { field: string; value: string }): Promise<User|undefined> {
     const result = await User.query()
       .select("*")
       .where(data.field, "=", data.value);
     return result[0];
   }
-  async findById(id: string): Promise<User> {
+  async findById(id: string): Promise<User |undefined> {
     const user = await User.query().findById(id);
     return user;
   }
   async Delete(id: string): Promise<User> {
-    const deletedUser = await this.findById(id);
+    const deletedUser = await this.findById(id) as User;
     await User.query().deleteById(id);
     return deletedUser;
   }
@@ -56,7 +56,7 @@ export default class UserRepository implements IRepository {
       .isInsert();
     return result;
   }
-  async fetchInspector(name: String): Promise<User> {
+  async fetchInspector(name: String): Promise<User|undefined> {
     const inspector = await User.query().select("*").where("name", "=", name);
 
     return inspector[0];
