@@ -6,7 +6,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { Knex } from "knex";
+import * as Knex from "knex";
 
 const addDefaultColumns = (table: Knex.CreateTableBuilder): void => {
   table.timestamps(false, true);

@@ -1,7 +1,6 @@
 import User from "@Entities/user.entity";
-import { injectable } from "inversify";
 import { UserDto } from "../DTOs/UserDTO";
-import InspectionSite from "../entities/InspectionSite.entity";
+import InspectionSite from "@Entities/InspectionSite.entity";
 
 export interface IUserRepository {
   insert(data: UserDto): Promise<User>;
@@ -13,11 +12,10 @@ export interface IUserRepository {
   findById(id: string): Promise<User|undefined>;
   Delete(id: string): Promise<User>;
   insertInspector(userId: string, apiaryId: string): Promise<boolean>;
-  fetchInspector(name: String): Promise<User|undefined>;
+  fetchInspector(name: string): Promise<User|undefined>;
   removeAnInspector(id: string): Promise<User>;
 
 }
-@injectable()
 export default class UserRepository implements IUserRepository {
   public async insert(data: UserDto): Promise<User> {
     const result = await User.query().insert(data);
@@ -51,13 +49,13 @@ export default class UserRepository implements IUserRepository {
   public async insertInspector(userId: string, apiaryId: string): Promise<boolean> {
     const result = await InspectionSite.query()
       .insert({
-        User_id: userId,
-        Apiary_id: apiaryId,
+        User_id: userId as unknown as number,
+        Apiary_id: apiaryId ,
       })
-      .isInsert();
-    return result;
+      ;
+    return result?true:false;
   }
-  public async fetchInspector(name: String): Promise<User|undefined> {
+  public async fetchInspector(name: string): Promise<User|undefined> {
     const inspector = await User.query().select("*").where("name", "=", name);
 
     return inspector[0];

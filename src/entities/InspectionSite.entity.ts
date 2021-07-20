@@ -12,6 +12,8 @@ const database = Knex(config);
 Model.knex(database);
 
 export default class InspectionSite extends Model {
+  public User_id?: number;
+  public Apiary_id!: string;
 
   static get tableName(): string {
     return TableNames.Ispection_Sites;
@@ -39,6 +41,4 @@ export default class InspectionSite extends Model {
       },
     },
   };
-  public User_id?: number;
-  public Apiary_id!: string;
 }

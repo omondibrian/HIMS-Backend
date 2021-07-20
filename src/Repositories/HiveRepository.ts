@@ -11,7 +11,6 @@ import Hive from "@Entities/Hive.entity";
 import HiveReport from "@Entities/HiveReport.entity";
 import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
 import { HiveDTO, IHiveReport } from "@HIHM/src/DTOs/HiveDTO";
-import { injectable } from "inversify";
 import TableNames from "../constants";
 import InspectionSite from "../entities/InspectionSite.entity";
 
@@ -33,7 +32,6 @@ export interface IHiveRepository {
   ): Promise<Omit<HiveDTO, "HiveReport">>;
   fetchInspectionSites(userId: string): Promise<ApiaryDto[]>;
 }
-@injectable()
 export class HiveRepository implements IHiveRepository {
   public async fetchInspectionSites(userId: string): Promise<ApiaryDto[]> {
     const inspectionSitesData = await InspectionSite.query()
@@ -53,11 +51,20 @@ export class HiveRepository implements IHiveRepository {
   }
 
   public async createApiary(data: ApiaryDto): Promise<Apiary> {
-    const apiary = await Apiary.query().insert(data);
+    const apiary = await Apiary.query().insert({
+      name: data.name,
+      User_id: data.User_id,
+    });
     return apiary;
   }
-  public async modifyApiary(id: string, data: Partial<ApiaryDto>): Promise<Apiary> {
-    const updatedApiary = await Apiary.query().patchAndFetchById(id, data);
+  public async modifyApiary(
+    id: string,
+    data: Partial<ApiaryDto>
+  ): Promise<Apiary> {
+    const updatedApiary = await Apiary.query().patchAndFetchById(id, {
+      name: data.name,
+      User_id: data.User_id,
+    });
     return updatedApiary;
   }
   public async getApiary(ownerId: string): Promise<Apiary[]> {
@@ -157,7 +164,7 @@ export class HiveRepository implements IHiveRepository {
   ): Promise<HiveReport> {
     const hiveReport = await HiveReport.query().insertAndFetch({
       ...report,
-      Hive_id: hiveId,
+      Hive_id: hiveId as unknown as number,
     });
     return hiveReport;
   }

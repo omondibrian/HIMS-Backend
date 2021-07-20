@@ -1,38 +1,17 @@
-import { TYPES } from "@HIHM/src/constants/Types";
 import { UserDto } from "@HIHM/src/DTOs/UserDTO";
-import { UserServiceProvider } from "@HIHM/src/services/User";
-import { EditProfile } from "@Services/User/usecase/EditProfile";
-import { LogIn } from "@Services/User/usecase/LogIn";
-import { PasswordReset } from "@Services/User/usecase/PasswordReset";
-import { Registration } from "@Services/User/usecase/Register";
-import { ViewProfile } from "@Services/User/usecase/ViewProfile";
-import express from "express";
-import { inject } from "inversify";
-import {
-  controller,
-  httpGet,
-  httpPost,
-  httpPut,
-  interfaces,
-} from "inversify-express-utils";
+import { TokenMiddleware } from "@HIHM/src/lib/middleware";
+import { UserServiceProvider } from "@Services/User";
+import { Router } from "express";
 
-@controller("api/v1/auth")
-export default class AuthController implements interfaces.Controller {
-  private readonly registerUsecase: Registration;
-  private readonly login: LogIn;
-  private readonly resetPass: PasswordReset;
-  private readonly fetchProfile: ViewProfile;
-  private readonly editProfile: EditProfile;
+const userRoutes = Router();
 
-  constructor(
-    @inject(TYPES.UserServiceProvider) serviceProvider: UserServiceProvider
-  ) {
-    this.registerUsecase = serviceProvider.registration;
-    this.login = serviceProvider.login;
-    this.resetPass = serviceProvider.resetPass;
-    this.fetchProfile = serviceProvider.fetchProfile;
-    this.editProfile = serviceProvider.editProfile;
-  }
+const serviceProvider: UserServiceProvider = new UserServiceProvider();
+const registerUsecase = serviceProvider.registration;
+const login = serviceProvider.login;
+const resetPass = serviceProvider.resetPass;
+const fetchProfile = serviceProvider.fetchProfile;
+const editProfile = serviceProvider.editProfile;
+
 /**
  * @openapi
  * definitions:
@@ -91,24 +70,34 @@ export default class AuthController implements interfaces.Controller {
  *      500:
  *       description: registration unsucessfull please retry
  */
-  @httpPost("/register")
-  public async register(req: express.Request, res: express.Response) {
-    const { name, email, password, type, profilePic, backGroundImg } = req.body;
+userRoutes.post("/register", async (req, res) => {
+  let uploadPath;
 
-    const newUser = new UserDto(
-      name,
-      email,
-      profilePic,
-      backGroundImg,
-      type,
-      password
-    );
-    const result = await this.registerUsecase.registeruser(newUser);
-    res.status(result!.status).json({
-      users: result!.getResult().payload,
-      message: result!.getResult().message,
-    });
+  if (!req.files || Object.keys(req.files).length === 0) {
+    res.status(400).send("No files were uploaded.");
+    return;
   }
+  const { name, email, password, Type } = req.body;
+  const profilePic: any = req.files?.profilePic;
+  const BackGroundImg: any = req.files?.BackGroundImg;
+  uploadPath = "uploads/";
+  profilePic.mv(uploadPath + Date.now() + profilePic.name);
+  BackGroundImg.mv(uploadPath + Date.now() + BackGroundImg.name);
+  const newUser = new UserDto(
+    name,
+    email,
+    uploadPath + Date.now() + profilePic.name,
+    uploadPath + Date.now() + BackGroundImg.name,
+    Type,
+    password
+  );
+  const result = await registerUsecase.registeruser(newUser);
+  res.status(result!.status).json({
+    user: result!.getResult().payload,
+    message: result!.getResult().message,
+  });
+});
+
 /**
  * @openapi
  * definitions:
@@ -148,14 +137,14 @@ export default class AuthController implements interfaces.Controller {
  *       description: internal server error
  *
  */
-  @httpPost("/login")
-  public async loginRoute(req: express.Request, res: express.Response) {
-    const result = await this.login.login(req.body);
-    res.status(result!.status).json({
-      users: result!.getResult().payload,
-      message: result!.getResult().message,
-    });
-  }
+userRoutes.post("/login", async (req, res) => {
+  const result = await login.login(req.body);
+  res.status(result!.status).json({
+    user: result!.getResult().payload,
+    message: result!.getResult().message,
+  });
+});
+
 /**
  * @openapi
  *
@@ -186,79 +175,81 @@ export default class AuthController implements interfaces.Controller {
  *      500:
  *       description: profile update unsucessfull please retry
  */
-  @httpPut("/edit")
-  public async Edit(req: express.Request, res: express.Response) {
-    const result = await this.editProfile.update(req.UserId, req.body);
-    res.status(result!.status).json({
-      users: result!.getResult().payload,
-      message: result!.getResult().message,
-    });
-  }
-  /**
-   * @openapi
-   * definitions:
-   *  forgotpass:
-   *   type: object
-   *   properties:
-   *      email:
-   *       type: string
-   *       description:  user's email
-   *       required: true
-   *       example: 'Johndoe@test.com'
-   * /api/v1/auth/password-reset:
-   *   post:
-   *    description: reset's user password
-   *    parameters:
-   *     - in: body
-   *       name: body
-   *       required: true
-   *       schema:
-   *        $ref: '#/definitions/forgotpass'
-   *    requestBody:
-   *     content:
-   *      application/json:
-   *       schema:
-   *        $ref: '#/definitions/forgotpass'
-   *    responses:
-   *      200:
-   *       description:  sucessfull reset password please check your email
-   *      500:
-   *       description: password reset unsucessfull please retry
-   *
-   */
-  @httpPost("/password-reset")
-  public async Reset(req: express.Request, res: express.Response) {
-    const result = await this.resetPass.reset(req.body);
-    res.status(result!.status).json({
-      users: result!.getResult().payload,
-      message: result!.getResult().message,
-    });
-  }
+userRoutes.put("/edit", TokenMiddleware, async (req, res) => {
+  const result = await editProfile.update(req.UserId, {
+    ...req.body,
+    ...req.files,
+  });
+  res.status(result!.status).json({
+    user: result!.getResult().payload,
+    message: result!.getResult().message,
+  });
+});
 
-  /**
-   * @openapi
-   * /api/v1/auth/profile:
-   *   get:
-   *     description: fetch user profile data
-   *     parameters:
-   *      - in: path
-   *        name: id
-   *        required: true
-   *        type: interger
-   *        example: 1
-   *        description: id of the user
-   *     responses:
-   *      200:
-   *       description: profile retrival successfull
-   *      500:
-   *       description: error retriving user profile
-   */
-  @httpGet("/profile")
-  public async getProfileData(req: express.Request, res: express.Response) {
-    const result = await this.fetchProfile.profile(req.UserId);
-    res.status(result!.status).json({
-      users: result!.getResult().payload,
-      message: result!.getResult().message,
-    });
-  }
-}
+/**
+ * @openapi
+ * definitions:
+ *  forgotpass:
+ *   type: object
+ *   properties:
+ *      email:
+ *       type: string
+ *       description:  user's email
+ *       required: true
+ *       example: 'Johndoe@test.com'
+ * /api/v1/auth/password-reset:
+ *   post:
+ *    description: reset's user password
+ *    parameters:
+ *     - in: body
+ *       name: body
+ *       required: true
+ *       schema:
+ *        $ref: '#/definitions/forgotpass'
+ *    requestBody:
+ *     content:
+ *      application/json:
+ *       schema:
+ *        $ref: '#/definitions/forgotpass'
+ *    responses:
+ *      200:
+ *       description:  sucessfull reset password please check your email
+ *      500:
+ *       description: password reset unsucessfull please retry
+ *
+ */
+userRoutes.post("/password-reset", async (req, res) => {
+  const result = await resetPass.reset(req.body);
+  res.status(result!.status).json({
+    user: result!.getResult().payload,
+    message: result!.getResult().message,
+  });
+});
+
+/**
+ * @openapi
+ * /api/v1/auth/profile:
+ *   get:
+ *     description: fetch user profile data
+ *     parameters:
+ *      - in: path
+ *        name: id
+ *        required: true
+ *        type: interger
+ *        example: 1
+ *        description: id of the user
+ *     responses:
+ *      200:
+ *       description: profile retrival successfull
+ *      500:
+ *       description: error retriving user profile
+ */
+userRoutes.get("/profile", TokenMiddleware, async (req, res) => {
+  const result = await fetchProfile.profile(req.UserId);
+  res.status(result!.status).json({
+    user: result!.getResult().payload,
+    message: result!.getResult().message,
+  });
+});
+
+export default userRoutes;

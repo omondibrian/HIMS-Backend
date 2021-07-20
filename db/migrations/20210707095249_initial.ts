@@ -3,7 +3,7 @@ require("module-alias/register");
 
 import TableNames, { orderedTables } from "@HIHM/src/constants";
 import { addDefaultColumns, createRef } from "@HIHM/src/lib/db";
-import { Knex } from "knex";
+import  * as Knex from "knex";
 
 export async function up(knex: Knex): Promise<void> {
   await Promise.all([

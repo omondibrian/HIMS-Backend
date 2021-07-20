@@ -11,7 +11,9 @@ export class Registration {
     private readonly jwt: any,
     private readonly bcrypt: any,
     private readonly mailer: IMailer,
-    private readonly config: any
+    private readonly config: () => {
+      env: string | undefined;
+  }
   ) {}
   public async registeruser(
     newUser: UserDto

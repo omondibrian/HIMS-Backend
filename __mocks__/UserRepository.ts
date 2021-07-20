@@ -21,7 +21,7 @@ export class UserMockRepository implements IUserRepository {
     public insertInspector(userId: string, apiaryId: string): Promise<boolean> {
         throw new Error("Method not implemented.");
     }
-    public fetchInspector(name: String): Promise<userEntity | undefined> {
+    public fetchInspector(name: string): Promise<userEntity | undefined> {
         throw new Error("Method not implemented.");
     }
     public removeAnInspector(id: string): Promise<userEntity> {

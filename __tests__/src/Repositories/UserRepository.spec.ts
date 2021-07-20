@@ -106,7 +106,7 @@ describe("UserRepository", () => {
         .select("*")
         .where("name", "=", UpdatedData.name);
       const newApiary = new ApiaryDto("TestApiary", owner[0]._id + "");
-      const { _id } = await Apiary.query().insert(newApiary);
+      const { _id } = await Apiary.query().insert({name:newApiary.name,User_id:newApiary.User_id});
       const result = await repository.insertInspector(
         inspector[0]._id + "",
         _id + ""

@@ -6,7 +6,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { injectable } from "inversify";
 import nodemailer, { Transporter } from "nodemailer";
 
 export interface IMailer {
@@ -19,7 +18,6 @@ export interface IMail {
   subject: string;
   text: string;
 }
-@injectable()
 class NotificationService implements IMailer {
   private notificationTransporter: Transporter;
   constructor(

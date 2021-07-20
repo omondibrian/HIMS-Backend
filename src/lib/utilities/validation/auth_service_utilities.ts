@@ -7,7 +7,6 @@
  */
 
 import { UserDto } from "@HIHM/src/DTOs/UserDTO";
-import { injectable } from "inversify";
 import Joi from "joi";
 
 export interface IAuthserviceUtilities {
@@ -19,7 +18,6 @@ export interface IAuthserviceUtilities {
     _entityBody: UserDto
   ): Joi.ValidationResult;
 }
-@injectable()
 export default class AuthServiceUtilities implements IAuthserviceUtilities {
   public loginValidation(
     _entityBody: {email: string, password: string}
@@ -44,7 +42,7 @@ export default class AuthServiceUtilities implements IAuthserviceUtilities {
         .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
         .required(),
       profilePic: Joi.any(),
-      BackGroundImg: Joi.string(),
+      BackGroundImg: Joi.any(),
       Type: Joi.string().required(),
       email: Joi.string()
         .email({
