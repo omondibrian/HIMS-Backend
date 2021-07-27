@@ -1,8 +1,8 @@
 
 require("module-alias/register");
 
-import TableNames, { orderedTables } from "@HIHM/src/constants";
-import { addDefaultColumns, createRef } from "@HIHM/src/lib/db";
+import TableNames, { orderedTables } from "../../src/constants";
+import { addDefaultColumns, createRef } from "../../src/lib/db";
 import  * as Knex from "knex";
 
 export async function up(knex: Knex): Promise<void> {
