@@ -7,7 +7,7 @@ import morgan from "morgan";
 import fileUpload from "express-fileupload";
 import swaggerDocs from "swagger-jsdoc";
 import SwaggerUIExpress from "swagger-ui-express";
-
+import path from 'path';
 import userRoutes from "@Routes/Auth";
 import hiveRoutes from "./src/routes/Hive";
 import { TokenMiddleware, UserMode } from "./src/lib/middleware";
@@ -36,6 +36,7 @@ App.use(express.json());
 App.use(fileUpload());
 App.use(cors());
 App.use(helmet());
+App.use('/uploads', express.static('uploads'))
 App.use(morgan("tiny"));
 App.use('/api/v1/auth/',userRoutes)
 App.use('/api/v1/Hive/',TokenMiddleware,UserMode,hiveRoutes)

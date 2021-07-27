@@ -77,6 +77,6 @@
     "@Services": "dist/src/services",
     "@Repositories": "dist/src/Repositories",
     "@Entities": "dist/src/entities",
-    "@HIHM": "."
+    "@HIHM": "dist"
   }
 }
