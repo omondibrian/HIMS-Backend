@@ -18,7 +18,8 @@ export const TokenMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.header("AUTH_TOKEN");
+  const token = req.header("AUTH-TOKEN");
+  console.log(token)
   if (!token) return res.status(401).send("ACCESS DENIED");
 
   try {
