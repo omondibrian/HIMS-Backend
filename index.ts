@@ -7,7 +7,6 @@ import morgan from "morgan";
 import fileUpload from "express-fileupload";
 import swaggerDocs from "swagger-jsdoc";
 import SwaggerUIExpress from "swagger-ui-express";
-import path from 'path';
 import userRoutes from "@Routes/Auth";
 import hiveRoutes from "./src/routes/Hive";
 import { TokenMiddleware, UserMode } from "./src/lib/middleware";
