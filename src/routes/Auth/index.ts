@@ -2,6 +2,7 @@ import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import { TokenMiddleware } from "@HIHM/src/lib/middleware";
 import { UserServiceProvider } from "@Services/User";
 import { Router } from "express";
+import path from 'path';
 
 const userRoutes = Router();
 
@@ -80,14 +81,14 @@ userRoutes.post("/register", async (req, res) => {
   const { name, email, password, Type } = req.body;
   const profilePic: any = req.files?.profilePic;
   const BackGroundImg: any = req.files?.BackGroundImg;
-  uploadPath = "uploads/";
-  profilePic.mv(uploadPath + Date.now() + profilePic.name);
-  BackGroundImg.mv(uploadPath + Date.now() + BackGroundImg.name);
+  uploadPath = path.relative('.','uploads')  
+  profilePic.mv(uploadPath +'/'+ Date.now() + profilePic.name);
+  BackGroundImg.mv(uploadPath +'/'+ Date.now() + BackGroundImg.name);
   const newUser = new UserDto(
     name,
     email,
-    uploadPath + Date.now() + profilePic.name,
-    uploadPath + Date.now() + BackGroundImg.name,
+    uploadPath +'/'+ Date.now() + profilePic.name,
+    uploadPath +'/'+ Date.now() + BackGroundImg.name,
     Type,
     password
   );

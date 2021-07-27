@@ -37,7 +37,7 @@
     "inversify-express-utils": "^6.3.2",
     "joi": "^17.4.1",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.21.18",
+    "knex": "0.21.18",
     "module-alias": "^2.2.2",
     "morgan": "^1.10.0",
     "nodemailer": "^6.6.2",
@@ -77,6 +77,6 @@
     "@Services": "dist/src/services",
     "@Repositories": "dist/src/Repositories",
     "@Entities": "dist/src/entities",
-    "@HIHM": "."
+    "@HIHM": "dist"
   }
 }
