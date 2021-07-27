@@ -1,7 +1,7 @@
 /* istanbul ignore file */
+import con from "@HIHM/knexfile";
 import Knex from "knex";
 import { Model } from "objection";
-import con from "@HIHM/knexfile";
 import TableNames from "../constants";
 import Apiary from "./Apiary.entity";
 
@@ -11,10 +11,6 @@ const database = Knex(config);
 Model.knex(database);
 
 export default class Hive extends Model {
-  _id?: number;
-  Name!: string;
-  Type!: string;
-  Apiary_id!: string;
   static get tableName(): string {
     return TableNames.Hive;
   }
@@ -23,7 +19,7 @@ export default class Hive extends Model {
     return "_id";
   }
 
-  static relationMappings = {
+  public static relationMappings = {
     [TableNames.Apiary]: {
       relation: Model.BelongsToOneRelation,
       modelClass: Apiary,
@@ -33,4 +29,8 @@ export default class Hive extends Model {
       },
     },
   };
+  public _id?: number;
+  public Name!: string;
+  public Type!: string;
+  public Apiary_id!: string;
 }

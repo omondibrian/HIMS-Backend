@@ -20,7 +20,7 @@ export class HiveDTO {
     public Name: string,
     public Type: string,
     public Apiary_id: string,
-    public HiveReport?: Array<IHiveReport>,
+    public HiveReport?: IHiveReport[],
     public Hive_id?: string
   ) {}
 }

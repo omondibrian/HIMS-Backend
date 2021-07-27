@@ -1,10 +1,10 @@
+import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
 import { HiveDTO, IHiveReport } from "@HIHM/src/DTOs/HiveDTO";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import {
   HiveAnalytics,
   IHiveAnalytics,
 } from "@HIHM/src/services/Hive/usecases/HiveAnalytics";
-import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
 
 describe("Hive Analytics", () => {
   const repo = new MockHiveRepository();
@@ -30,7 +30,7 @@ describe("Hive Analytics", () => {
     HiveReport: [report],
     Hive_id: "1",
     Apiary_id: "1",
-    Data: ["10"], //production per harvest
+    Data: ["10"], // production per harvest
     labelDescription: "Hive Yearly Honey Production ",
   };
   const ExpectedData = new ResultPayload<IHiveAnalytics>(mockData, 200);

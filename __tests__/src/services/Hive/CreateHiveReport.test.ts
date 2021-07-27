@@ -1,8 +1,8 @@
+import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
 import { IHiveReport } from "@HIHM/src/DTOs/HiveDTO";
 import HiveReport from "@HIHM/src/entities/HiveReport.entity";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { CreateHiveReport } from "@HIHM/src/services/Hive/usecases/CreateHiveReport";
-import { MockHiveRepository } from "@HIHM/__mocks__/HiveRepository";
 
 describe("CreateHiveReport - usecase", () => {
   const report: IHiveReport = {
@@ -35,14 +35,14 @@ describe("CreateHiveReport - usecase", () => {
     expect(result).toStrictEqual<ResultPayload<IHiveReport>>(
       new ResultPayload<IHiveReport>(report, 200)
     );
-    mockInsert.mockClear()
+    mockInsert.mockClear();
   });
 
   it("should return resultPayload with an error incase of an exception", async () => {
     const mockInsert = jest.spyOn(repo, "insertHiveReport").mockImplementation(() => {
       throw new Error("testing for Exceptions");
     });
-    config.mockReturnValue({env:'development'})
+    config.mockReturnValue({env: "development"});
     const result = await usecase.Generate(hiveId, report);
     expect(result).toBeDefined();
 
@@ -59,7 +59,7 @@ describe("CreateHiveReport - usecase", () => {
     const mockInsert = jest.spyOn(repo, "insertHiveReport").mockImplementation(() => {
       throw new Error("testing for Exceptions");
     });
-    config.mockReturnValue({env:'production'})
+    config.mockReturnValue({env: "production"});
     const result = await usecase.Generate(hiveId, report);
     expect(result).toBeDefined();
 

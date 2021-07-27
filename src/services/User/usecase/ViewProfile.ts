@@ -1,15 +1,15 @@
-import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import User from "@Entities/user.entity";
+import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
-import { IRepository } from "@Repositories/UserRepository";
+import { IUserRepository } from "@Repositories/UserRepository";
 
 export class ViewProfile {
   constructor(
-    private readonly repo: IRepository,
+    private readonly repo: IUserRepository,
     private readonly config: any
   ) {}
 
-  async profile(
+  public async profile(
     userId: string
   ): Promise<ResultPayload<UserDto> | ResultPayload<Error> | undefined> {
     try {

@@ -1,10 +1,10 @@
-require("module-alias/register");
 import "reflect-metadata";
-import { UserDto } from "@HIHM/src/DTOs/UserDTO";
-import UserRepository from "@Repositories/UserRepository";
-import User from "@HIHM/src/entities/user.entity";
+require("module-alias/register");
 import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
+import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import Apiary from "@HIHM/src/entities/Apiary.entity";
+import User from "@HIHM/src/entities/user.entity";
+import UserRepository from "@Repositories/UserRepository";
 
 describe("UserRepository", () => {
   const repository = new UserRepository();
@@ -26,14 +26,14 @@ describe("UserRepository", () => {
   );
   beforeAll(async () => {
     await User.query().delete().where("email", "=", testData.email);
-    //create a new Inspector
+    // create a new Inspector
     await User.query().insert(inspectorData);
   });
 
   afterAll(async () => {
     await User.query().delete().where("name", "=", inspectorData.name);
     await User.knex().destroy();
-    await Apiary.knex().destroy()
+    await Apiary.knex().destroy();
   });
   describe("UserRepository - Insert", () => {
     it("should successfully insert the new User Detail based on the specified Data", async () => {
@@ -106,7 +106,7 @@ describe("UserRepository", () => {
         .select("*")
         .where("name", "=", UpdatedData.name);
       const newApiary = new ApiaryDto("TestApiary", owner[0]._id + "");
-      const { _id } = await Apiary.query().insert(newApiary);
+      const { _id } = await Apiary.query().insert({name:newApiary.name,User_id:newApiary.User_id});
       const result = await repository.insertInspector(
         inspector[0]._id + "",
         _id + ""

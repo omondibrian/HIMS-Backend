@@ -1,13 +1,13 @@
 import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
-import { IRepository } from "@Repositories/HiveRepository";
+import { IHiveRepository } from "@Repositories/HiveRepository";
 
 export class DeleteApiary {
   constructor(
-    private readonly repo: IRepository,
+    private readonly repo: IHiveRepository,
     private readonly config: any
   ) {}
-  async delete(
+  public async delete(
     apiaryID: string
   ): Promise<ResultPayload<ApiaryDto> | ResultPayload<Error> | undefined> {
     try {

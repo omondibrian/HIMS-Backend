@@ -6,24 +6,23 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
-import { HiveDTO, IHiveReport } from "@HIHM/src/DTOs/HiveDTO";
 import Apiary from "@Entities/Apiary.entity";
 import Hive from "@Entities/Hive.entity";
 import HiveReport from "@Entities/HiveReport.entity";
+import { ApiaryDto } from "@HIHM/src/DTOs/ApiaryDTO";
+import { HiveDTO, IHiveReport } from "@HIHM/src/DTOs/HiveDTO";
 import TableNames from "../constants";
-import { injectable } from "inversify";
 import InspectionSite from "../entities/InspectionSite.entity";
 
-export interface IRepository {
+export interface IHiveRepository {
   createApiary(data: ApiaryDto): Promise<Apiary>;
   createHive(
     data: Omit<HiveDTO, "HiveReport">
   ): Promise<Omit<HiveDTO, "HiveReport">>;
   modifyApiary(id: string, data: Partial<ApiaryDto>): Promise<Apiary>;
-  getApiary(ownerId: string): Promise<Array<Apiary>>;
+  getApiary(ownerId: string): Promise<Apiary[]>;
   DeleteApiary(id: string): Promise<Apiary>;
-  GetHives(ApiaryId: string): Promise<Array<Hive>>;
+  GetHives(ApiaryId: string): Promise<Hive[]>;
   GetHiveDetails(hiveId: string): Promise<HiveDTO>;
   RemoveHive(id: string): Promise<Hive>;
   insertHiveReport(hiveId: string, report: IHiveReport): Promise<HiveReport>;
@@ -31,11 +30,10 @@ export interface IRepository {
     hiveId: string,
     data: Omit<HiveDTO, "HiveReport">
   ): Promise<Omit<HiveDTO, "HiveReport">>;
-  fetchInspectionSites(userId: string): Promise<Array<ApiaryDto>>;
+  fetchInspectionSites(userId: string): Promise<ApiaryDto[]>;
 }
-@injectable()
-export class HiveRepository implements IRepository {
-  async fetchInspectionSites(userId: string): Promise<ApiaryDto[]> {
+export class HiveRepository implements IHiveRepository {
+  public async fetchInspectionSites(userId: string): Promise<ApiaryDto[]> {
     const inspectionSitesData = await InspectionSite.query()
       .select(`${TableNames.Ispection_Sites}.${TableNames.Apiary}_id`)
       .where(
@@ -52,32 +50,41 @@ export class HiveRepository implements IRepository {
     return result;
   }
 
-  async createApiary(data: ApiaryDto): Promise<Apiary> {
-    const apiary = await Apiary.query().insert(data);
+  public async createApiary(data: ApiaryDto): Promise<Apiary> {
+    const apiary = await Apiary.query().insert({
+      name: data.name,
+      User_id: data.User_id,
+    });
     return apiary;
   }
-  async modifyApiary(id: string, data: Partial<ApiaryDto>): Promise<Apiary> {
-    const updatedApiary = await Apiary.query().patchAndFetchById(id, data);
+  public async modifyApiary(
+    id: string,
+    data: Partial<ApiaryDto>
+  ): Promise<Apiary> {
+    const updatedApiary = await Apiary.query().patchAndFetchById(id, {
+      name: data.name,
+      User_id: data.User_id,
+    });
     return updatedApiary;
   }
-  async getApiary(ownerId: string): Promise<Apiary[]> {
+  public async getApiary(ownerId: string): Promise<Apiary[]> {
     const apiaries = await Apiary.query()
       .select("*")
       .where(`${TableNames.user}_id `, "=", ownerId);
     return apiaries;
   }
-  async DeleteApiary(id: string): Promise<Apiary> {
+  public async DeleteApiary(id: string): Promise<Apiary> {
     const apiary = await Apiary.query().findById(id);
     await Apiary.query().deleteById(id);
     return apiary;
   }
-  async GetHives(ApiaryId: string): Promise<Hive[]> {
+  public async GetHives(ApiaryId: string): Promise<Hive[]> {
     const hives = await Hive.query()
       .select("*")
       .where(`${TableNames.Apiary}_id `, "=", ApiaryId);
     return hives;
   }
-  async GetHiveDetails(hiveId: string): Promise<HiveDTO> {
+  public async GetHiveDetails(hiveId: string): Promise<HiveDTO> {
     const HiveDetails = await Hive.query()
       .select(
         `${TableNames.Hive}._id`,
@@ -132,12 +139,12 @@ export class HiveRepository implements IRepository {
     );
     return result;
   }
-  async RemoveHive(id: string): Promise<Hive> {
+  public async RemoveHive(id: string): Promise<Hive> {
     const hive = await Hive.query().findById(id);
     await Hive.query().deleteById(id);
     return hive;
   }
-  async createHive(
+  public async createHive(
     data: Omit<HiveDTO, "HiveReport">
   ): Promise<Omit<HiveDTO, "HiveReport">> {
     const hive = await Hive.query().insert(data);
@@ -151,17 +158,17 @@ export class HiveRepository implements IRepository {
     );
     return result;
   }
-  async insertHiveReport(
+  public async insertHiveReport(
     hiveId: string,
     report: IHiveReport
   ): Promise<HiveReport> {
     const hiveReport = await HiveReport.query().insertAndFetch({
       ...report,
-      Hive_id: hiveId,
+      Hive_id: hiveId as unknown as number,
     });
     return hiveReport;
   }
-  async updateHive(
+  public async updateHive(
     hiveId: string,
     data: Omit<HiveDTO, "HiveReport">
   ): Promise<Omit<HiveDTO, "HiveReport">> {

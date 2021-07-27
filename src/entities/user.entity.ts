@@ -1,35 +1,26 @@
 /* istanbul ignore file */
+import con from "@HIHM/knexfile";
 import Knex from "knex" ;
 import { Model } from "objection";
-import con from '@HIHM/knexfile'
 import TableNames from "../constants";
 import Apiary from "./Apiary.entity";
 
-const env = process.env.NODE_ENV as string || "development"  
-const config = env === "development" ? con.development: con.production;
+const env = process.env.NODE_ENV as string || "development";
+const config = env === "development" ? con.development : con.production;
 const database = Knex(config);
 Model.knex(database);
 
 export default class User extends Model {
-  _id?: number;
-  name!: string;
-  email!: string;
-  profilePic!: string;
-  password!: string;
-  BackGroundImg!: string;
-  Type!: string;
 
   static get tableName(): string {
     return TableNames.user;
   }
 
-  static get idColumn() :string{
-    return '_id';
-  } 
-  
+  static get idColumn(): string {
+    return "_id";
+  }
 
-    
-  static relationMappings = {
+  public static relationMappings = {
     [TableNames.Apiary]: {
       relation: Model.HasOneThroughRelation,
       modelClass: Apiary,
@@ -44,4 +35,11 @@ export default class User extends Model {
       }
     }
   };
+  public _id?: number;
+  public name!: string;
+  public email!: string;
+  public profilePic!: string;
+  public password!: string;
+  public BackGroundImg!: string;
+  public Type!: string;
 }

@@ -1,18 +1,18 @@
 import User from "@Entities/user.entity";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { IAuthserviceUtilities } from "@HIHM/src/lib/utilities/validation/auth_service_utilities";
-import { IRepository } from "@Repositories/UserRepository";
+import { IUserRepository } from "@Repositories/UserRepository";
 
 export class LogIn {
   constructor(
-    private readonly repo: IRepository,
+    private readonly repo: IUserRepository,
     private readonly utility: IAuthserviceUtilities,
     private readonly jwt: any,
     private readonly bcrypt: any,
     private readonly config: any
   ) {}
 
-  async login(credentials: {
+  public async login(credentials: {
     email: string;
     password: string;
   }): Promise<
@@ -21,14 +21,14 @@ export class LogIn {
     | undefined
   > {
     try {
-      //TODO:catch execeptions in the main user's service route
+      // TODO:catch execeptions in the main user's service route
 
-      //validate the user input
+      // validate the user input
       const { error } = this.utility.loginValidation(credentials);
-      if (error) throw new Error(`${error.details[0].message}`);
-      let user: User | undefined = undefined;
+      if (error) { throw new Error(`${error.details[0].message}`); }
+      let user: User | undefined;
       try {
-        //check if the email passed exists doesn't exists
+        // check if the email passed exists doesn't exists
         user = await this.repo.find({
           field: "email",
           value: credentials.email,
@@ -40,23 +40,24 @@ export class LogIn {
             : "unable to login at the moment please try again";
         throw new Error(msg);
       }
-      if (!user) throw new Error("Error authenticating please try again !");
-      //check if password is correct
+      if (!user) { throw new Error("Error authenticating please try again !"); }
+      // check if password is correct
       const validPass = await this.bcrypt.compare(
         credentials.password,
         user.password
       );
-      if (!validPass)
+      if (!validPass) {
         throw new Error("Error authenticating please try again !");
+      }
 
-      //todo:check if account is active
+      // todo:check if account is active
       // if (!user.isActive)
       //   return {
       //     message:
       //       "Access Denied 👺👺 - This account has been temporarily been disabled .Please activate your account",
       //   };
 
-      //create and assign an authentification token
+      // create and assign an authentification token
       const token = this.jwt.sign(
         { _id: user._id },
         process.env.SECREATE_TOKEN

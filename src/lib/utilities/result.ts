@@ -1,22 +1,22 @@
 export class ResultPayload<T> {
-  data: T | Error;
-  status: number;
+  public data: T | Error;
+  public status: number;
   constructor(data: T | Error, status: number) {
     this.data = data;
     this.status = status;
   }
-  isError() {
+  public isError() {
     return this.data instanceof Error;
   }
 
-  getError() {
+  public getError() {
     return this.isError() ? (this.data as Error) : undefined;
   }
 
-  getPayload() {
+  public getPayload() {
     return this.isError() ? undefined : (this.data as T);
   }
-  getResult(): {
+  public getResult(): {
     payload: T | undefined;
     message?: string;
   } {

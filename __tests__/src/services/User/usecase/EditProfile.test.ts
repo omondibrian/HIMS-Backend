@@ -1,21 +1,21 @@
-import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import User from "@Entities/user.entity";
-import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { UserMockRepository } from "@HIHM/__mocks__/UserRepository";
+import { UserDto } from "@HIHM/src/DTOs/UserDTO";
+import { ResultPayload } from "@HIHM/src/lib/utilities/result";
 import { EditProfile } from "@HIHM/src/services/User/usecase/EditProfile";
 
 class Bcrypt {
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   constructor() {}
-  compare() {
+  public compare() {
     return true;
   }
-  hash(pass: string) {
+  public hash(pass: string) {
     return `pass${pass}`;
   }
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  genSalt(): any {}
+  public genSalt(): any {}
 }
 
 describe("EditProfile - Usecase", () => {
@@ -26,7 +26,7 @@ describe("EditProfile - Usecase", () => {
   const testRepo = new UserMockRepository();
   const config = jest.fn().mockReturnValue({ env: "development" });
   const bcrypt = new Bcrypt();
-  const usecase = new EditProfile(testRepo,bcrypt,config);
+  const usecase = new EditProfile(testRepo, bcrypt, config);
   const user = new UserDto(
     "testUser",
     "test@email.com",
@@ -43,20 +43,20 @@ describe("EditProfile - Usecase", () => {
     "inspector",
     "testPass"
   );
-  const userId = '1';
+  const userId = "1";
   it("should successfully Edit User Profile password changed", async () => {
-    //setup mocks
+    // setup mocks
     const mockUpdate = jest
       .spyOn(testRepo, "update")
       .mockResolvedValue(newUserProfile as User);
     const mockBcrypt = jest
       .spyOn(bcrypt, "hash")
       .mockReturnValue(user.password as string);
-    const result = await usecase.update(userId,newUserProfile);
+    const result = await usecase.update(userId, newUserProfile);
 
     expect(testRepo.update).toHaveBeenCalledTimes(1);
     expect(bcrypt.hash).toHaveBeenCalledTimes(1);
-    expect(result).toBeDefined()
+    expect(result).toBeDefined();
     mockUpdate.mockClear();
     mockBcrypt.mockClear();
   });
@@ -69,15 +69,15 @@ describe("EditProfile - Usecase", () => {
         "./background.jpg",
         "inspector",
       );
-    //setup mocks
+    // setup mocks
     const mockUpdate = jest
       .spyOn(testRepo, "update")
       .mockResolvedValue(newUserProfile as User);
-   
-    const result = await usecase.update(userId,newUserProfile);
+
+    const result = await usecase.update(userId, newUserProfile);
 
     expect(testRepo.update).toHaveBeenCalledTimes(1);
-    expect(result).toBeDefined()
+    expect(result).toBeDefined();
     mockUpdate.mockClear();
   });
 
@@ -86,7 +86,7 @@ describe("EditProfile - Usecase", () => {
       throw new Error("Error will Testing");
     });
     config.mockReturnValue({ env: "development" });
-    const result = ( await usecase.update(userId,newUserProfile)) as ResultPayload<Error>;
+    const result = ( await usecase.update(userId, newUserProfile)) as ResultPayload<Error>;
 
     const expectedSimulatedResults = new ResultPayload<Error>(
       new Error("Error will Testing"),
@@ -104,7 +104,7 @@ describe("EditProfile - Usecase", () => {
       throw new Error("Error will Testing");
     });
     config.mockReturnValue({ env: "production" });
-    const result = ( await usecase.update(userId,newUserProfile)) as ResultPayload<Error>;
+    const result = ( await usecase.update(userId, newUserProfile)) as ResultPayload<Error>;
 
     const expectedSimulatedResults = new ResultPayload<Error>(
       new Error("Unable to update Profile"),

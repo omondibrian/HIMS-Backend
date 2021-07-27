@@ -1,5 +1,6 @@
-import NotificationService, { IMail } from "../../../../src/services/email";
+import "reflect-metadata";
 import nodemailer from "nodemailer";
+import NotificationService, { IMail } from "../../../../src/services/email";
 
 describe("Notification service", () => {
   const setup = async () => {
@@ -22,7 +23,7 @@ describe("Notification service", () => {
       text: "test msg",
     };
     const result = await notification.send(mail);
-    console.log(result)
+    console.log(result);
     expect(result).toBeDefined();
   }, 100000);
 });

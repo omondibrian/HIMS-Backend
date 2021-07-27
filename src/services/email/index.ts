@@ -38,7 +38,7 @@ class NotificationService implements IMailer {
       },
     });
   }
-  send = async (mail: IMail): Promise<{ messageId: string; msg: string }> => {
+  public send = async (mail: IMail): Promise<{ messageId: string; msg: string }> => {
     // if(process.env.Node_ENV === 'test'){
     //   return {
     //     messageId: '675-4545-664',
@@ -46,7 +46,7 @@ class NotificationService implements IMailer {
     //   };
     // }
     // send mail with defined transport object
-    let info = await this.notificationTransporter.sendMail({
+    const info = await this.notificationTransporter.sendMail({
       from: mail.from, // sender address
       to: mail.to, // list of receivers
       subject: mail.subject, // Subject line
@@ -60,7 +60,7 @@ class NotificationService implements IMailer {
       messageId: info.messageId,
       msg: "Message sent Successfull",
     };
-  };
+  }
 }
 
 export default NotificationService;

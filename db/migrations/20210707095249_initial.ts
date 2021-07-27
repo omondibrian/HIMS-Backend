@@ -1,13 +1,13 @@
 
-require('module-alias/register')
+require("module-alias/register");
 
 import TableNames, { orderedTables } from "@HIHM/src/constants";
 import { addDefaultColumns, createRef } from "@HIHM/src/lib/db";
-import { Knex } from "knex";
+import  * as Knex from "knex";
 
 export async function up(knex: Knex): Promise<void> {
   await Promise.all([
-    //Users table
+    // Users table
     await knex.schema.createTable(
       TableNames.user,
       (table: Knex.CreateTableBuilder) => {
@@ -21,7 +21,7 @@ export async function up(knex: Knex): Promise<void> {
         addDefaultColumns(table);
       }
     ),
-    //Apiary table
+    // Apiary table
     await knex.schema.createTable(
       TableNames.Apiary,
       (table: Knex.CreateTableBuilder) => {
@@ -31,7 +31,7 @@ export async function up(knex: Knex): Promise<void> {
         addDefaultColumns(table);
       }
     ),
-    //Hive table
+    // Hive table
     await knex.schema.createTable(
       TableNames.Hive,
       (table: Knex.CreateTableBuilder) => {
@@ -42,7 +42,7 @@ export async function up(knex: Knex): Promise<void> {
         addDefaultColumns(table);
       }
     ),
-    //Hive-Reports table
+    // Hive-Reports table
     await knex.schema.createTable(
       TableNames.Hive_Report,
       (table: Knex.CreateTableBuilder) => {
@@ -64,7 +64,7 @@ export async function up(knex: Knex): Promise<void> {
         addDefaultColumns(table);
       }
     ),
-    //INSPECTION_SITES table
+    // INSPECTION_SITES table
     await knex.schema.createTable(
       TableNames.Ispection_Sites,
       (table: Knex.CreateTableBuilder) => {
@@ -83,4 +83,4 @@ export async function down(knex: Knex): Promise<void> {
         )
       );
 }
- 
+

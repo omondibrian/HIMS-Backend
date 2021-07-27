@@ -1,13 +1,13 @@
 import { IHiveReport } from "@HIHM/src/DTOs/HiveDTO";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
-import { IRepository } from "@HIHM/src/Repositories/HiveRepository";
+import { IHiveRepository } from "@HIHM/src/Repositories/HiveRepository";
 
 export class CreateHiveReport {
   constructor(
-    private readonly repo: IRepository,
+    private readonly repo: IHiveRepository,
     private readonly config: { env: string } | any
   ) {}
-  async Generate(
+  public async Generate(
     hiveId: string,
     report: IHiveReport
   ): Promise<ResultPayload<IHiveReport> | ResultPayload<Error> | undefined> {

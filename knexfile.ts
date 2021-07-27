@@ -2,55 +2,53 @@
   import {config  } from "dotenv";
   config();
   export default  {
-  
+
     development: {
-      client: 'pg',
+      client: "pg",
       connection: {
-        port:process.env.POSTGRES_PORT as unknown as  number,
+        port: process.env.POSTGRES_PORT as unknown as  number,
         database: process.env.POSTGRES_DB,
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
       },
       migrations: {
-        directory: './db/migrations',
+        directory: "./db/migrations",
       },
       seeds: {
-        directory: './db/seed',
+        directory: "./db/seed",
       },
     },
-  
+
     staging: {
-      client: 'pg',
+      client: "pg",
       connection: {
-        port:process.env.POSTGRES_PORT  as unknown as  number,
+        port: process.env.POSTGRES_PORT  as unknown as  number,
         database: process.env.POSTGRES_DB,
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
       },
       migrations: {
-        directory: './db/migrations',
+        directory: "./db/migrations",
       },
       seeds: {
-        directory: './db/seed',
+        directory: "./db/seed",
       },
     },
-  
+
     production: {
-      client: 'pg',
+      client: "pg",
       connection: {
-        port:process.env.POSTGRES_PORT  as unknown as  number,
+        port: process.env.POSTGRES_PORT  as unknown as  number,
         database: process.env.POSTGRES_DB,
         user: process.env.POSTGRES_USER,
         password: process.env.POSTGRES_PASSWORD,
       },
       migrations: {
-        directory: './db/migrations',
+        directory: "./db/migrations",
       },
       seeds: {
-        directory: './db/seed',
+        directory: "./db/seed",
       },
     },
-  
+
   };
-
-

@@ -11,17 +11,16 @@ import Joi from "joi";
 
 export interface IAuthserviceUtilities {
   loginValidation(
-    _entityBody: {email:string,password:string}
+    _entityBody: {email: string, password: string}
   ): Joi.ValidationResult;
 
   registrationValidation(
     _entityBody: UserDto
   ): Joi.ValidationResult;
 }
-
 export default class AuthServiceUtilities implements IAuthserviceUtilities {
-  loginValidation(
-    _entityBody: {email:string,password:string}
+  public loginValidation(
+    _entityBody: {email: string, password: string}
   ): Joi.ValidationResult {
     const schema = Joi.object({
       password: Joi.string().required(),
@@ -34,7 +33,7 @@ export default class AuthServiceUtilities implements IAuthserviceUtilities {
     const result = schema.validate(_entityBody);
     return result;
   }
-  registrationValidation(
+  public registrationValidation(
     _entityBody: UserDto
   ): Joi.ValidationResult {
     const schema = Joi.object({
@@ -43,8 +42,8 @@ export default class AuthServiceUtilities implements IAuthserviceUtilities {
         .pattern(new RegExp("^[a-zA-Z0-9]{3,30}$"))
         .required(),
       profilePic: Joi.any(),
-      BackGroundImg:Joi.string(),
-      Type:Joi.string().required(),
+      BackGroundImg: Joi.any(),
+      Type: Joi.string().required(),
       email: Joi.string()
         .email({
           minDomainSegments: 2,

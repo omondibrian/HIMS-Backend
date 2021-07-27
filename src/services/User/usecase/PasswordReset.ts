@@ -1,19 +1,19 @@
 import { UserDto } from "@HIHM/src/DTOs/UserDTO";
 import User from "@HIHM/src/entities/user.entity";
 import { ResultPayload } from "@HIHM/src/lib/utilities/result";
-import { IRepository } from "@Repositories/UserRepository";
+import { IUserRepository } from "@Repositories/UserRepository";
 import { IMailer } from "@Services/email";
 
 export class PasswordReset {
   constructor(
-    private readonly repo: IRepository,
+    private readonly repo: IUserRepository,
     private readonly mailer: IMailer,
     private readonly generate: any,
     private readonly bcrypt: any,
     private readonly config: any
   ) {}
 
-  async reset(credentials: {
+  public async reset(credentials: {
     email: string;
     newPassword: string;
   }): Promise<
@@ -24,10 +24,10 @@ export class PasswordReset {
         field: "email",
         value: credentials.email,
       })) as User;
-      if (!user) throw new Error("Invalid Email please try again !");
+      if (!user) { throw new Error("Invalid Email please try again !"); }
 
       const secreateToken = this.generate(7);
-      //encrpte the password
+      // encrpte the password
       const salt = await this.bcrypt.genSalt(10);
       const encrptedPass = await this.bcrypt.hash(secreateToken, salt);
 
@@ -44,7 +44,7 @@ export class PasswordReset {
         newUser
       );
       if (result) {
-        //compose an email
+        // compose an email
         const html = `
             Hello <strong>${result.name} </strong>,<br/>
             please enter the verification code below to access your account<br/><br/>
@@ -52,7 +52,7 @@ export class PasswordReset {
             Token:<span style="color:blue;">${secreateToken}</span><br/><br/>
             Have a nice day.
             `;
-        //send the email
+        // send the email
         await this.mailer.send({
           to: user.email,
           from: process.env.Email as string,
